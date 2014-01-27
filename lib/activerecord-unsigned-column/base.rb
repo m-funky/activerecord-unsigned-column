@@ -71,6 +71,10 @@ module ActiveRecord
             return nil if value.nil?
             return coder.load(value) if encoded?
             value.to_i rescue value ? 1 : 0
+          elsif type == :unsigned_decimal
+            return nil if value.nil?
+            return coder.load(value) if encoded?
+            self.class.value_to_decimal(value)
           else
             super
           end
