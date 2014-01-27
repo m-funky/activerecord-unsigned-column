@@ -12,7 +12,7 @@ module ActiveRecord
     end
 
     class Table
-      def unsigned
+      def unsigned(*args)
         options = args.extract_options!
         column_names = args
         type = :unsigned
@@ -27,7 +27,7 @@ module ActiveRecord
         end
       end
 
-      def unsigned_d
+      def unsigned_d(*args)
         options = args.extract_options!
         column_names = args
         type = :unsigned_decimal
