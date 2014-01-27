@@ -1,7 +1,7 @@
 module ActiveRecord
   module ConnectionAdapters
     class TableDefinition
-      ['unsigned', 'unsigned_d'].map do |method|
+      ['unsigned', 'unsigned_decimal'].map do |method|
         define_method "#{method}" do |*args|
           options = args.extract_options!
           column_names = args
@@ -30,7 +30,7 @@ module ActiveRecord
       def unsigned_d
         options = args.extract_options!
         column_names = args
-        type = :unsigned_d
+        type = :unsigned_decimal
         column_names.each do |name|
           column = ColumnDefinition.new(@base, name, type)
           if options[:precision]
@@ -56,7 +56,7 @@ module ActiveRecord
             if field_type =~ /int/i
               :unsigned
             elsif field_type =~ /decimal/i
-              :unsigned_d
+              :unsigned_decimal
             else
               simplified_type_without_unsigned(field_type)
             end
@@ -78,7 +78,7 @@ module ActiveRecord
       end
 
       def type_to_sql_with_unsigned(type, limit = nil, precision = nil, scale = nil)
-        if type == :unsigned_d
+        if type == :unsigned_decimal
           type_to_sql_without_unsigned(:decimal, limit, precision, scale) << " unsigned"
         elsif type == :unsigned
           case limit
@@ -97,7 +97,7 @@ module ActiveRecord
 
       NATIVE_DATABASE_TYPES.merge!(
         :unsigned => { :name => 'int(10) unsigned', :limit => 4 },
-        :unsigned_d => { :name => 'decimal(10,2) unsigned', :precision => 10, :scale => 2}
+        :unsigned_decimal => { :name => 'decimal(10,2) unsigned', :precision => 10, :scale => 2}
       )
     end
   end
